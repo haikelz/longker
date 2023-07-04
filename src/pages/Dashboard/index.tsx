@@ -79,7 +79,7 @@ export default function Dashboard() {
                 <Tr>
                   <Th>ID</Th>
                   <Th>Name</Th>
-                  <Th>City</Th>
+                  <Th>Company Name</Th>
                   <Th>Salary</Th>
                   <Th>Actions</Th>
                 </Tr>
@@ -122,7 +122,7 @@ export default function Dashboard() {
         )}
         <Link to="/dashboard/add">
           <Button mt={5} colorScheme="telegram">
-            Add new data!
+            Add New Job Vacancy
           </Button>
         </Link>
       </Stack>
