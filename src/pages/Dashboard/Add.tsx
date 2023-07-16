@@ -10,7 +10,7 @@ import {
 } from "@chakra-ui/react";
 import axios from "axios";
 import Cookies from "js-cookie";
-import { FormEvent, useRef } from "react";
+import { FormEvent, Ref, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import ProtectedRoute from "~/components/ui/ProtectedRoute";
 import { useTitle } from "~/hooks";
@@ -144,7 +144,7 @@ export default function AddNewData() {
                           : "number"
                       }
                       name={item.name}
-                      ref={item.ref as any}
+                      ref={item.ref as Ref<HTMLInputElement>}
                     />
                   ) : (
                     <Textarea name={item.name} ref={item.ref as any} />

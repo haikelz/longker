@@ -7,6 +7,7 @@ specifiers:
   '@emotion/react': ^11.11.1
   '@emotion/styled': ^11.11.0
   '@fontsource-variable/plus-jakarta-sans': ^5.0.4
+  '@hookform/resolvers': ^3.1.1
   '@types/js-cookie': ^3.0.3
   '@types/node': ^20.3.3
   '@types/react': ^18.2.14
@@ -21,8 +22,10 @@ specifiers:
   eslint-plugin-react-refresh: ^0.4.1
   framer-motion: ^10.12.17
   js-cookie: ^3.0.5
+  nope-validator: ^1.0.4
   react: ^18.2.0
   react-dom: ^18.2.0
+  react-hook-form: ^7.45.1
   react-router-dom: ^6.14.0
   typescript: ^5.1.6
   vite: ^4.3.9
@@ -34,11 +37,14 @@ dependencies:
   '@emotion/react': 11.11.1_i73ekzlbntu7jol6ph2fvy4mga
   '@emotion/styled': 11.11.0_rowjtfdjat7gur3v4vqpuckrf4
   '@fontsource-variable/plus-jakarta-sans': 5.0.4
+  '@hookform/resolvers': 3.1.1_react-hook-form@7.45.1
   axios: 1.4.0
   framer-motion: 10.12.17_biqbaboplfbrettd7655fr4n2y
   js-cookie: 3.0.5
+  nope-validator: 1.0.4
   react: 18.2.0
   react-dom: 18.2.0_react@18.2.0
+  react-hook-form: 7.45.1_react@18.2.0
   react-router-dom: 6.14.0_biqbaboplfbrettd7655fr4n2y
 
 devDependencies:
@@ -1758,6 +1764,14 @@ packages:
     resolution: {integrity: sha512-4RWnlqw1RvGwMk01GTvLZNB2utVdATkTPwrGd+KSkDnMZlpyoHkgmvIlcpsN+/3CaSelVaORZYtYcxm/z8OfkQ==}
     dev: false
 
+  /@hookform/resolvers/3.1.1_react-hook-form@7.45.1:
+    resolution: {integrity: sha512-tS16bAUkqjITNSvbJuO1x7MXbn7Oe8ZziDTJdA9mMvsoYthnOOiznOTGBYwbdlYBgU+tgpI/BtTU3paRbCuSlg==}
+    peerDependencies:
+      react-hook-form: ^7.0.0
+    dependencies:
+      react-hook-form: 7.45.1_react@18.2.0
+    dev: false
+
   /@humanwhocodes/config-array/0.11.10:
     resolution: {integrity: sha512-KVVjQmNUepDVGXNuoRRdmmEjruj0KfiGSbS8LVc12LMsWDQzRXJ0qdhN8L8uUigKpfEHRhlaQFY0ib1tnUbNeQ==}
     engines: {node: '>=10.10.0'}
@@ -3246,6 +3260,10 @@ packages:
     resolution: {integrity: sha512-QzsYKWhXTWx8h1kIvqfnC++o0pEmpRQA/aenALsL2F4pqNVr7YzcdMlDij5WBnwftRbJCNJL/O7zdKaxKPHqgQ==}
     dev: true
 
+  /nope-validator/1.0.4:
+    resolution: {integrity: sha512-+ooCIlPpDJbD8H9oz+izVqe28ZO+Km6WCGYJnkm+DOLkAWunhDwxV9PyZ5J2gZ/URFeX3u1Mk+yz7kIra5wayg==}
+    dev: false
+
   /object-assign/4.1.1:
     resolution: {integrity: sha512-rJgTQnkUnH1sFw8yT6VSU3zD3sWmu6sZhIseY8VX+GRu3P6F7Fu+JNDoXfklElbLJSnc3FUQHVe4cU5hj+BcUg==}
     engines: {node: '>=0.10.0'}
@@ -3456,6 +3474,15 @@ packages:
       react-clientside-effect: 1.2.6_react@18.2.0
       use-callback-ref: 1.3.0_i73ekzlbntu7jol6ph2fvy4mga
       use-sidecar: 1.1.2_i73ekzlbntu7jol6ph2fvy4mga
+    dev: false
+
+  /react-hook-form/7.45.1_react@18.2.0:
+    resolution: {integrity: sha512-6dWoFJwycbuFfw/iKMcl+RdAOAOHDiF11KWYhNDRN/OkUt+Di5qsZHwA0OwsVnu9y135gkHpTw9DJA+WzCeR9w==}
+    engines: {node: '>=12.22.0'}
+    peerDependencies:
+      react: ^16.8.0 || ^17 || ^18
+    dependencies:
+      react: 18.2.0
     dev: false
 
   /react-is/16.13.1:

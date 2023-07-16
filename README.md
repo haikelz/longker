@@ -11,6 +11,8 @@
 - Context API
 - Chakra UI
 - Framer Motion
+- React Hook Form
+- Nope Validator
 
 ## Screenshots
 

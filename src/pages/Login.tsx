@@ -2,37 +2,48 @@ import {
   Box,
   Button,
   FormControl,
+  FormErrorMessage,
   FormLabel,
   Heading,
   Input,
   Stack,
   Text,
 } from "@chakra-ui/react";
+import { nopeResolver } from "@hookform/resolvers/nope";
 import axios from "axios";
 import Cookies from "js-cookie";
-import { ChangeEvent, useRef } from "react";
+import { useForm } from "react-hook-form";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import { useTitle } from "~/hooks";
 import { LOGIN_API } from "~/lib/utils/constants";
+import { loginSchema } from "~/lib/utils/schema";
 import { ChildrenProps } from "~/models";
 
 export default function LoginPage() {
   const navigate = useNavigate();
 
-  const emailRef = useRef<HTMLInputElement>(null);
-  const passwordRef = useRef<HTMLInputElement>(null);
+  const {
+    register,
+    getValues,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    defaultValues: {
+      email: "",
+      password: "",
+    },
+    resolver: nopeResolver(loginSchema),
+  });
 
-  async function handleSubmit(e: ChangeEvent<HTMLFormElement>): Promise<void> {
-    e.preventDefault();
-
+  async function onSubmit(): Promise<void> {
     try {
       const response = await axios.post(LOGIN_API, {
-        email: emailRef.current?.value,
-        password: passwordRef.current?.value,
+        email: getValues("email"),
+        password: getValues("password"),
       });
 
-      Cookies.set("token", response.data.token, { expires: 7 });
       navigate("/");
+      Cookies.set("token", response.data.token, { expires: 7 });
     } catch (err: any) {
       alert(err.message);
       console.error(err);
@@ -54,20 +65,25 @@ export default function LoginPage() {
           p={5}
           mt={6}
         >
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmit(onSubmit)}>
             <Stack spacing={5}>
-              <FormControl id="email">
-                <FormLabel>Email address</FormLabel>
-                <Input ref={emailRef} type="email" name="email" required />
+              <FormControl isInvalid={!!errors.email}>
+                <FormLabel htmlFor="email">Email address</FormLabel>
+                <Input {...register("email")} type="email" name="email" />
+                {errors.email ? (
+                  <FormErrorMessage>{errors.email.message}</FormErrorMessage>
+                ) : null}
               </FormControl>
-              <FormControl id="password">
-                <FormLabel>Password</FormLabel>
+              <FormControl isInvalid={!!errors.password}>
+                <FormLabel htmlFor="password">Password</FormLabel>
                 <Input
-                  ref={passwordRef}
+                  {...register("password")}
                   type="password"
                   name="password"
-                  required
                 />
+                {errors.password ? (
+                  <FormErrorMessage>{errors.password.message}</FormErrorMessage>
+                ) : null}
               </FormControl>
               <Stack spacing={4}>
                 <Button colorScheme="red" type="submit">
