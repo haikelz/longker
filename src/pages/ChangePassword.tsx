@@ -2,66 +2,53 @@ import {
   Box,
   Button,
   FormControl,
+  FormErrorMessage,
   FormLabel,
   Heading,
   Input,
   Stack,
 } from "@chakra-ui/react";
+import { nopeResolver } from "@hookform/resolvers/nope";
 import axios from "axios";
 import Cookies from "js-cookie";
-import { ChangeEvent, FormEvent, useState } from "react";
+import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import ProtectedRoute from "~/components/ui/ProtectedRoute";
 import { useTitle } from "~/hooks";
 import { CHANGE_PASSWORD_API } from "~/lib/utils/constants";
-
-interface FormDataProps {
-  current_password: string;
-  new_password: string;
-  new_confirm_password: string;
-}
-
-type IndexTargetValueProps = Record<string, string> & FormDataProps;
+import { changePasswordSchema } from "~/lib/utils/schema";
 
 export default function ChangePassword() {
   const navigate = useNavigate();
 
-  const [formData, setFormData] = useState<FormDataProps>({
-    current_password: "",
-    new_password: "",
-    new_confirm_password: "",
-  });
-
-  const inputsList = [
-    {
-      name: "current_password",
-      value: formData.current_password,
-    },
-    { name: "new_password", value: formData.new_password },
-    { name: "new_confirm_password", value: formData.new_confirm_password },
-  ];
-
-  function handleChange(e: ChangeEvent<HTMLInputElement>) {
-    const data: IndexTargetValueProps = { ...formData };
-    data[e.target.name] = e.target.value;
-
-    setFormData(data);
-  }
-
-  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-
-    await axios.post(CHANGE_PASSWORD_API, formData, {
-      headers: {
-        Authorization: `Bearer ${Cookies.get("token")}`,
-      },
-    });
-
-    setFormData({
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    getValues,
+  } = useForm({
+    defaultValues: {
       current_password: "",
       new_password: "",
       new_confirm_password: "",
-    });
+    },
+    resolver: nopeResolver(changePasswordSchema),
+  });
+
+  async function onSubmit() {
+    await axios.post(
+      CHANGE_PASSWORD_API,
+      {
+        current_password: getValues("current_password"),
+        new_password: getValues("new_password"),
+        new_confirm_password: getValues("new_confirm_password"),
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${Cookies.get("token")}`,
+        },
+      }
+    );
 
     Cookies.remove("token");
     navigate("/login");
@@ -82,21 +69,51 @@ export default function ChangePassword() {
           p={5}
           mt={6}
         >
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmit(onSubmit)}>
             <Stack spacing={4}>
-              {inputsList.map((item) => (
-                <FormControl key={item.name}>
-                  <FormLabel textTransform="capitalize">
-                    {item.name.split("_").join(" ")}
-                  </FormLabel>
-                  <Input
-                    type="password"
-                    name={item.name}
-                    value={item.value}
-                    onChange={handleChange}
-                  />
-                </FormControl>
-              ))}
+              <FormControl isInvalid={!!errors.current_password}>
+                <FormLabel textTransform="capitalize">
+                  Current Password
+                </FormLabel>
+                <Input
+                  {...register("current_password")}
+                  type="password"
+                  name="current_password"
+                />
+                {errors.current_password ? (
+                  <FormErrorMessage>
+                    {errors.current_password.message}
+                  </FormErrorMessage>
+                ) : null}
+              </FormControl>
+              <FormControl isInvalid={!!errors.new_password}>
+                <FormLabel textTransform="capitalize">New Password</FormLabel>
+                <Input
+                  {...register("new_password")}
+                  type="password"
+                  name="new_password"
+                />
+                {errors.new_password ? (
+                  <FormErrorMessage>
+                    {errors.new_password.message}
+                  </FormErrorMessage>
+                ) : null}
+              </FormControl>
+              <FormControl isInvalid={!!errors.new_confirm_password}>
+                <FormLabel textTransform="capitalize">
+                  Confirm New Password
+                </FormLabel>
+                <Input
+                  {...register("new_confirm_password")}
+                  type="password"
+                  name="new_confirm_password"
+                />
+                {errors.new_confirm_password ? (
+                  <FormErrorMessage>
+                    {errors.new_confirm_password.message}
+                  </FormErrorMessage>
+                ) : null}
+              </FormControl>
               <Stack spacing={10}>
                 <Button type="submit" colorScheme="red">
                   Submit
